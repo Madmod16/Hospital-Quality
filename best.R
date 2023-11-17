@@ -11,11 +11,22 @@ best <- function(state, outcome) {
   else if(!(outcome == "heart attack" || outcome == "heart failure"|| outcome == "pneumonia"))
      {
        stop("invalid outcome")
-     }
+  }
   
-  df$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack <- 
-    replace(df$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack, 
-            df$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack == "Not Available", NA)
+  outcome_names <- function(outcome)
+  {
+    if(outcome == "heart attack") { return("Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack")}
+    else if(outcome == "heart failure") { return("Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure")}
+    else { return("Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia")}
+  }
+
+  data_without_na <- function(outcome)
+  {
+    replace(df[[outcome_names(outcome)]], df[[outcome_names(outcome)]] == "Not Available", NA)
+  }
+  
+  df[[outcome_names(outcome)]] <- data_without_na(outcome)
+  
   df <- na.omit(df)
   ## Return hospital name in that state with lowest 30-day death
   ## rate
@@ -24,7 +35,7 @@ best <- function(state, outcome) {
     cleand_df <- df[df$State == state, c("Hospital.Name", "State",
                         "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack")] ##Creates a data frame with selected state and outcome
     the_best <- cleand_df[cleand_df$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack == ##Save the best mortality rate in a vector 
-                            min(as.numeric(cleand_df$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack)),
+                            min(cleand_df$Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack),
               c("Hospital.Name")]
   }
   else if(outcome == "heart failure") ## death rate from heart failure
