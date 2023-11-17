@@ -71,4 +71,5 @@ rankall <- function(outcome, num = "best") {
   }
   rank_all_df <- data.frame(hospital = hospital, state = state)
   rank_all_df
+  
 }
