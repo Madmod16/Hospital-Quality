@@ -1,1 +1,2 @@
-# Hospital-Quality
+The code that  reads a file and returns a character vector
+with the name of the hospital that has the best (i.e. lowest) 30-day mortality for the specified outcome, reads a file and returns a character vector with the name of the hospital that has the ranking specified by the num argument in that state and reads a  file and returns a 2-column data frame containing the hospital in each state that has the ranking specified in num
